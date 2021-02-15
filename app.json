@@ -17,6 +17,7 @@
     "ios": {
       "supportsTablet": true
     },
+    "description": "A community for finding local musicians",
     "web": {
       "favicon": "./assets/favicon.png"
     },
