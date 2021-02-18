@@ -13,7 +13,6 @@ import { Form, FormPicker as Picker, SubmitButton } from "../components/forms";
 import colors from "../config/colors";
 import CategoryPickerItem from "../components/CategoryPickerItem";
 import Screen from "../components/Screen";
-import listingsApi from "../api/listings";
 import useLocation from "../hooks/useLocation";
 import UploadScreen from "./UploadScreen";
 import AppText from "../components/Text";
@@ -190,7 +189,7 @@ const styles = StyleSheet.create({
   logo: {
     width: 155,
     height: 155,
-    opacity: 0.85,
+    opacity: 0.8,
   },
   logoContainer: {
     position: "absolute",

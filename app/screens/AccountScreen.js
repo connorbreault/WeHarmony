@@ -1,13 +1,16 @@
 import React from "react";
-import { StyleSheet, View, FlatList } from "react-native";
+import { StyleSheet, View, FlatList, Image, Text } from "react-native";
 
 import colors from "../config/colors";
 import { ListItem, ListItemSeparator } from "../components/lists";
+import AppText from "../components/Text";
 import Icon from "../components/Icon";
+import Button from "../components/Button";
 import Screen from "../components/Screen";
 import routes from "../navigation/routes";
 import useAuth from "../auth/useAuth";
 import TopBar from "../components/TopBar";
+import { UserInterfaceIdiom } from "expo-constants";
 
 const menuItems = [
   {
@@ -33,48 +36,62 @@ function AccountScreen({ navigation }) {
   return (
     <Screen style={styles.screen}>
       <TopBar />
-      <View style={styles.container}>
-        <ListItem
-          title={user.name}
-          subTitle={user.email}
-          image={require("../assets/mosh.jpg")}
+      <View style={styles.userContainer}>
+        <View style={styles.container}>
+          <Image
+            source={require("../assets/profilePic.jpeg")}
+            style={styles.image}
+          />
+          <View style={styles.profileName}>
+            <AppText>{user.name}</AppText>
+            <AppText>{user.email}</AppText>
+          </View>
+        </View>
+        <Button
+          title="Edit Profile"
+          onPress={() => console.log("edit profile")}
         />
       </View>
-      <View style={styles.container}>
-        <FlatList
-          data={menuItems}
-          keyExtractor={(menuItem) => menuItem.title}
-          ItemSeparatorComponent={ListItemSeparator}
-          renderItem={({ item }) => (
-            <ListItem
-              title={item.title}
-              IconComponent={
-                <Icon
-                  name={item.icon.name}
-                  backgroundColor={item.icon.backgroundColor}
-                />
-              }
-              onPress={() => navigation.navigate(item.targetScreen)}
-            />
-          )}
-        />
-      </View>
+      <Text>{user.links}</Text>
       <ListItem
         title="Log Out"
-        IconComponent={<Icon name="logout" backgroundColor="#ffe66d" />}
+        IconComponent={<Icon name="logout" backgroundColor={colors.primary} />}
         onPress={() => logOut()}
+      />
+      <ListItem
+        title="Settings"
+        IconComponent={<Icon FAname="cog" backgroundColor={colors.medium} />}
+        onPress={() => console.log("settings")}
       />
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
+  image: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
   screen: {
     padding: Platform.OS === "android" ? 10 : 20,
     backgroundColor: colors.light,
   },
   container: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+  },
+  userContainer: {
+    backgroundColor: colors.white,
+    padding: 20,
+    borderRadius: 30,
     marginVertical: 20,
+  },
+  profileName: {
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: "center",
   },
 });
 
