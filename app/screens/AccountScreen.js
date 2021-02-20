@@ -17,9 +17,9 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import UserVideo from "../components/UserVideo";
 
 function AccountScreen({ navigation }) {
-  // useEffect(() => {
-  //   console.log(user);
-  // });
+  useEffect(() => {
+    console.log(user);
+  });
   const { user, logOut } = useAuth();
   const [playing, setPlaying] = useState(false);
 
@@ -49,6 +49,7 @@ function AccountScreen({ navigation }) {
             onPress={() => console.log("edit profile")}
           />
         </View>
+
         <View style={styles.container}>
           <View style={styles.videoHeaderContainer}>
             <Text style={styles.videoHeader}>Your Videos</Text>
@@ -56,38 +57,11 @@ function AccountScreen({ navigation }) {
               <Icon FAname="cog" backgroundColor={colors.primary} />
             </TouchableOpacity>
           </View>
-          <UserVideo videoId="RbIq-f1_Dr4" />
-          <YoutubePlayer
-            height={200}
-            play={playing}
-            videoId={"iee2TATGMyI"}
-            onChangeState={onStateChange}
-          />
-          <YoutubePlayer
-            height={200}
-            play={playing}
-            videoId={"7VtEdYMqJIM"}
-            onChangeState={onStateChange}
-          />
-          <YoutubePlayer
-            height={200}
-            play={playing}
-            videoId={"7VtEdYMqJIM"}
-            onChangeState={onStateChange}
-          />
-          <YoutubePlayer
-            height={200}
-            play={playing}
-            videoId={"7VtEdYMqJIM"}
-            onChangeState={onStateChange}
-          />
-          <YoutubePlayer
-            height={200}
-            play={playing}
-            videoId={"7VtEdYMqJIM"}
-            onChangeState={onStateChange}
-          />
+          {user.links.map((item) => {
+            return <UserVideo key={item.id} videoId={item.link} />;
+          })}
         </View>
+
         <View style={styles.container}>
           <ListItem
             title="Log Out"
