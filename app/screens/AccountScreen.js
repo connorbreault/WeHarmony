@@ -42,6 +42,13 @@ function AccountScreen({ navigation }) {
             <View style={styles.userNameContainer}>
               <AppText style={styles.userName}>{user.name}</AppText>
               <AppText style={styles.userLocation}>{user.location}</AppText>
+              {user.instruments.map((item) => {
+                return (
+                  <Text key={item.key} style={styles.instrument}>
+                    {item.instrument}
+                  </Text>
+                );
+              })}
             </View>
           </View>
           <Button
@@ -58,7 +65,7 @@ function AccountScreen({ navigation }) {
             </TouchableOpacity>
           </View>
           {user.links.map((item) => {
-            return <UserVideo key={item.id} videoId={item.link} />;
+            return <UserVideo key={item.key} videoId={item.link} />;
           })}
         </View>
 
@@ -91,6 +98,9 @@ function AccountScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  instrument: {
+    fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
+  },
   screen: {
     padding: Platform.OS === "android" ? 10 : 20,
     backgroundColor: colors.light,
