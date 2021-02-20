@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useState, useCallback, useRef } from "react";
 import { StyleSheet, View, FlatList, Image, Text } from "react-native";
+import YoutubePlayer from "react-native-youtube-iframe";
 
 import colors from "../config/colors";
 import { ListItem, ListItemSeparator } from "../components/lists";
@@ -11,87 +12,153 @@ import routes from "../navigation/routes";
 import useAuth from "../auth/useAuth";
 import TopBar from "../components/TopBar";
 import { UserInterfaceIdiom } from "expo-constants";
-
-const menuItems = [
-  {
-    title: "My Listings",
-    icon: {
-      name: "format-list-bulleted",
-      backgroundColor: colors.primary,
-    },
-  },
-  {
-    title: "My Messages",
-    icon: {
-      name: "email",
-      backgroundColor: colors.secondary,
-    },
-    targetScreen: routes.MESSAGES,
-  },
-];
+import { useEffect } from "react";
+import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 
 function AccountScreen({ navigation }) {
+  // useEffect(() => {
+  //   console.log(user);
+  // });
   const { user, logOut } = useAuth();
+  const [playing, setPlaying] = useState(false);
+
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+    }
+  }, []);
 
   return (
     <Screen style={styles.screen}>
       <TopBar />
-      <View style={styles.userContainer}>
+      <ScrollView>
         <View style={styles.container}>
-          <Image
-            source={require("../assets/profilePic.jpeg")}
-            style={styles.image}
-          />
-          <View style={styles.profileName}>
-            <AppText>{user.name}</AppText>
-            <AppText>{user.email}</AppText>
+          <View style={styles.user}>
+            <Image
+              source={require("../assets/profilePic.jpeg")}
+              style={styles.userPic}
+            />
+            <View style={styles.userNameContainer}>
+              <AppText style={styles.userName}>{user.name}</AppText>
+              <AppText style={styles.userLocation}>{user.location}</AppText>
+            </View>
           </View>
+          <Button
+            title="Edit Profile"
+            onPress={() => console.log("edit profile")}
+          />
         </View>
-        <Button
-          title="Edit Profile"
-          onPress={() => console.log("edit profile")}
-        />
-      </View>
-      <Text>{user.links}</Text>
-      <ListItem
-        title="Log Out"
-        IconComponent={<Icon name="logout" backgroundColor={colors.primary} />}
-        onPress={() => logOut()}
-      />
-      <ListItem
-        title="Settings"
-        IconComponent={<Icon FAname="cog" backgroundColor={colors.medium} />}
-        onPress={() => console.log("settings")}
-      />
+        <View style={styles.container}>
+          <View style={styles.videoHeaderContainer}>
+            <Text style={styles.videoHeader}>Your Videos</Text>
+            <TouchableOpacity onPress={() => console.log("edit videos")}>
+              <Icon FAname="cog" backgroundColor={colors.primary} />
+            </TouchableOpacity>
+          </View>
+          <YoutubePlayer
+            height={200}
+            play={playing}
+            videoId={"iee2TATGMyI"}
+            onChangeState={onStateChange}
+          />
+          <YoutubePlayer
+            height={200}
+            play={playing}
+            videoId={"7VtEdYMqJIM"}
+            onChangeState={onStateChange}
+          />
+          <YoutubePlayer
+            height={200}
+            play={playing}
+            videoId={"7VtEdYMqJIM"}
+            onChangeState={onStateChange}
+          />
+          <YoutubePlayer
+            height={200}
+            play={playing}
+            videoId={"7VtEdYMqJIM"}
+            onChangeState={onStateChange}
+          />
+          <YoutubePlayer
+            height={200}
+            play={playing}
+            videoId={"7VtEdYMqJIM"}
+            onChangeState={onStateChange}
+          />
+        </View>
+        <View style={styles.container}>
+          <ListItem
+            title="Log Out"
+            IconComponent={
+              <Icon name="logout" backgroundColor={colors.primary} />
+            }
+            onPress={() => logOut()}
+          />
+          <ListItem
+            title="Settings"
+            IconComponent={
+              <Icon FAname="cog" backgroundColor={colors.medium} />
+            }
+            onPress={() => console.log("settings")}
+          />
+          <ListItem
+            title="About Us"
+            IconComponent={
+              <Icon name="music-note" backgroundColor={colors.dark} />
+            }
+            onPress={() => console.log("about")}
+          />
+        </View>
+      </ScrollView>
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  image: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-  },
   screen: {
     padding: Platform.OS === "android" ? 10 : 20,
     backgroundColor: colors.light,
   },
-  container: {
+  user: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 10,
   },
-  userContainer: {
+  container: {
     backgroundColor: colors.white,
     padding: 20,
     borderRadius: 30,
-    marginVertical: 20,
+    marginVertical: 10,
   },
-  profileName: {
+  userLocation: {
+    fontSize: 20,
+  },
+  userName: {
+    fontSize: 25,
+    fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
+    fontWeight: "500",
+  },
+  userNameContainer: {
     textAlign: "center",
     justifyContent: "center",
     alignItems: "center",
+  },
+  userPic: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
+  },
+  videoHeader: {
+    fontSize: 35,
+    fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
+    fontWeight: "500",
+    color: colors.medium,
+  },
+  videoHeaderContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 10,
   },
 });
 

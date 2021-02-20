@@ -131,6 +131,7 @@ function TopBar(props) {
 
   return (
     <View style={styles.container}>
+      {/* Messages Modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -194,6 +195,7 @@ function TopBar(props) {
         </View>
       </Modal>
 
+      {/* Notifications Modal */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -244,6 +246,9 @@ function TopBar(props) {
         </View>
       </Modal>
 
+      {/* Main Topbar */}
+
+      {/* Message Button */}
       <TouchableOpacity
         styles={styles.notifications}
         onPress={() => {
@@ -252,7 +257,10 @@ function TopBar(props) {
       >
         <Icon name="message" backgroundColor={colors.primary} size={50} />
       </TouchableOpacity>
+
       <Image style={styles.logo} source={require("../assets/textLogo.png")} />
+
+      {/* Notifications Button */}
       <TouchableOpacity
         styles={styles.notifications}
         onPress={() => {
@@ -281,6 +289,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignContent: "space-between",
     justifyContent: "space-between",
+    marginBottom: 10,
   },
   logo: {
     width: "50%",
