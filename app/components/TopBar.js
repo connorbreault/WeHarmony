@@ -20,6 +20,7 @@ import {
 import NotificationsButton from "./NotificationsButton";
 import NotificationCard from "./NotificationCard";
 import MessageCard from "./MessageCard";
+import MessagesButton from "./MessagesButton";
 
 const notifications = [
   {
@@ -255,7 +256,7 @@ function TopBar(props) {
           setMessageModalVisible(true);
         }}
       >
-        <Icon name="message" backgroundColor={colors.primary} size={50} />
+        <MessagesButton />
       </TouchableOpacity>
 
       <Image style={styles.logo} source={require("../assets/textLogo.png")} />

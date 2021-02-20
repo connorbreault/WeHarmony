@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useRef } from "react";
+import React, { useState, useCallback } from "react";
 import { StyleSheet, View, FlatList, Image, Text } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 
@@ -14,6 +14,7 @@ import TopBar from "../components/TopBar";
 import { UserInterfaceIdiom } from "expo-constants";
 import { useEffect } from "react";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
+import UserVideo from "../components/UserVideo";
 
 function AccountScreen({ navigation }) {
   // useEffect(() => {
@@ -55,6 +56,7 @@ function AccountScreen({ navigation }) {
               <Icon FAname="cog" backgroundColor={colors.primary} />
             </TouchableOpacity>
           </View>
+          <UserVideo videoId="RbIq-f1_Dr4" />
           <YoutubePlayer
             height={200}
             play={playing}
