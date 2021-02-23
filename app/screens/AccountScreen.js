@@ -23,11 +23,12 @@ import { UserInterfaceIdiom } from "expo-constants";
 import { useEffect } from "react";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import UserVideo from "../components/UserVideo";
+import EditProfileButton from "../components/modals/EditProfileButton";
 
 function AccountScreen({ navigation }) {
-  useEffect(() => {
-    console.log(user.profilePic);
-  });
+  // useEffect(() => {
+  //   console.log(user.profilePic);
+  // });
   const { user, logOut } = useAuth();
   const [playing, setPlaying] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -45,7 +46,6 @@ function AccountScreen({ navigation }) {
         <View style={styles.container}>
           <View style={styles.user}>
             <Image
-              // source={require("../assets/profilePic.jpeg")}
               source={{
                 uri: user.profilePic,
               }}
@@ -63,10 +63,7 @@ function AccountScreen({ navigation }) {
               })}
             </View>
           </View>
-          <Button
-            title="Edit Profile"
-            onPress={() => console.log("edit profile")}
-          />
+          <EditProfileButton />
         </View>
 
         <View style={styles.container}>
