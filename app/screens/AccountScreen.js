@@ -1,5 +1,13 @@
 import React, { useState, useCallback } from "react";
-import { StyleSheet, View, FlatList, Image, Text } from "react-native";
+import {
+  StyleSheet,
+  View,
+  FlatList,
+  Image,
+  Text,
+  Modal,
+  Pressable,
+} from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 
 import colors from "../config/colors";
@@ -18,10 +26,11 @@ import UserVideo from "../components/UserVideo";
 
 function AccountScreen({ navigation }) {
   useEffect(() => {
-    console.log(user);
+    console.log(user.profilePic);
   });
   const { user, logOut } = useAuth();
   const [playing, setPlaying] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
 
   const onStateChange = useCallback((state) => {
     if (state === "ended") {
@@ -36,7 +45,10 @@ function AccountScreen({ navigation }) {
         <View style={styles.container}>
           <View style={styles.user}>
             <Image
-              source={require("../assets/profilePic.jpeg")}
+              // source={require("../assets/profilePic.jpeg")}
+              source={{
+                uri: user.profilePic,
+              }}
               style={styles.userPic}
             />
             <View style={styles.userNameContainer}>
@@ -69,13 +81,41 @@ function AccountScreen({ navigation }) {
           })}
         </View>
 
+        <View style={styles.centeredView}>
+          <Modal
+            animationType="slide"
+            transparent={true}
+            visible={modalVisible}
+            onRequestClose={() => {
+              setModalVisible(!modalVisible);
+            }}
+          >
+            <View style={styles.centeredView}>
+              <View style={styles.modalView}>
+                <Text style={styles.modalText}>Log Out?</Text>
+                <Button
+                  title="Yes"
+                  onPress={() => logOut()}
+                  style={styles.logOut}
+                />
+                <Button
+                  backgroundColor={colors.light}
+                  color="medium"
+                  title="No"
+                  onPress={() => setModalVisible(!modalVisible)}
+                />
+              </View>
+            </View>
+          </Modal>
+        </View>
+
         <View style={styles.container}>
           <ListItem
             title="Log Out"
             IconComponent={
               <Icon name="logout" backgroundColor={colors.primary} />
             }
-            onPress={() => logOut()}
+            onPress={() => setModalVisible(true)}
           />
           <ListItem
             title="Settings"
@@ -98,6 +138,38 @@ function AccountScreen({ navigation }) {
 }
 
 const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: "80%",
+  },
+  modalText: {
+    fontSize: 30,
+    marginBottom: 15,
+    textAlign: "center",
+    fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
+  },
+  logOut: {
+    width: "100%",
+  },
+
   instrument: {
     fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
   },
