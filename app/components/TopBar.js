@@ -298,7 +298,7 @@ const styles = StyleSheet.create({
     opacity: 0.9,
   },
   list: {
-    height: Platform.OS === " android" ? "50%" : "80%",
+    height: Platform.OS === " android" ? "50%" : "70%",
     marginBottom: 10,
   },
   centeredView: {
@@ -308,7 +308,7 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalTitle: {
-    fontSize: 30,
+    fontSize: 35,
     color: colors.primary,
     fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
     fontWeight: "bold",

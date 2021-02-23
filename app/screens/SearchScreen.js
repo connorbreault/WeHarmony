@@ -8,6 +8,7 @@ import {
   Platform,
 } from "react-native";
 import * as Yup from "yup";
+import Constants from "expo-constants";
 
 import { Form, FormPicker as Picker, SubmitButton } from "../components/forms";
 import colors from "../config/colors";
@@ -184,7 +185,7 @@ const styles = StyleSheet.create({
     fontWeight: "700",
   },
   inputs: {
-    marginVertical: 15,
+    marginVertical: 10,
   },
   logo: {
     width: 155,
@@ -193,7 +194,7 @@ const styles = StyleSheet.create({
   },
   logoContainer: {
     position: "absolute",
-    top: Platform.OS === "android" ? 50 : 70,
+    top: Constants.statusBarHeight,
     alignItems: "center",
   },
   submitButton: {
