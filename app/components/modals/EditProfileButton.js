@@ -28,7 +28,7 @@ function EditProfileButton(props) {
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required().label("Name"),
-    Instruments: Yup.object().nullable().label("Instruments"),
+    instruments: Yup.object().nullable().label("Instruments"),
     location: Yup.object().nullable().label("location"),
   });
   const emailValidationSchema = Yup.object().shape({
@@ -157,7 +157,7 @@ function EditProfileButton(props) {
                 </View>
                 <Picker
                   items={searchParams.Categories}
-                  name="Instruments"
+                  name="instruments"
                   numberOfColumns={3}
                   PickerItemComponent={CategoryPickerItem}
                   placeholder="Add New Talent"

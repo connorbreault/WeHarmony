@@ -24,6 +24,7 @@ import { useEffect } from "react";
 import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import UserVideo from "../components/UserVideo";
 import EditProfileButton from "../components/modals/EditProfileButton";
+import EditVideosButton from "../components/modals/EditVideosButton";
 
 function AccountScreen({ navigation }) {
   // useEffect(() => {
@@ -69,9 +70,7 @@ function AccountScreen({ navigation }) {
         <View style={styles.container}>
           <View style={styles.videoHeaderContainer}>
             <Text style={styles.videoHeader}>Your Videos</Text>
-            <TouchableOpacity onPress={() => console.log("edit videos")}>
-              <Icon FAname="cog" backgroundColor={colors.primary} />
-            </TouchableOpacity>
+            <EditVideosButton />
           </View>
           {user.links.map((item) => {
             return <UserVideo key={item.key} videoId={item.link} />;
