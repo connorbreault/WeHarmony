@@ -125,7 +125,7 @@ function AccountScreen({ navigation }) {
             IconComponent={
               <Icon name="music-note" backgroundColor={colors.dark} />
             }
-            onPress={() => console.log("about")}
+            onPress={() => navigation.navigate("AboutUs")}
           />
         </View>
       </ScrollView>

@@ -52,9 +52,9 @@ function EditVideosButton(props) {
               <View style={styles.separator} />
               <Form
                 initialValues={{
-                  video1: "",
-                  video2: "",
-                  video3: "",
+                  video1: user.links[0].link,
+                  video2: user.links[1].link,
+                  video3: user.links[2].link,
                 }}
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
