@@ -118,7 +118,7 @@ function AccountScreen({ navigation }) {
             IconComponent={
               <Icon FAname="cog" backgroundColor={colors.medium} />
             }
-            onPress={() => console.log("settings")}
+            onPress={() => navigation.navigate("Settings")}
           />
           <ListItem
             title="About Us"
