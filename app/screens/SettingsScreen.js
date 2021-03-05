@@ -54,6 +54,13 @@ function SettingsScreen({ navigation }) {
     console.log(values.Privacy.label);
     console.log(values.Color.label);
   };
+  const deleteAccountValidationSchema = Yup.object().shape({
+    Privacy: Yup.object().required().nullable().label("Privacy"),
+    Color: Yup.object().required().nullable().label("Color"),
+  });
+  const handleDeleteAccountSubmit = (values) => {
+    console.log(values);
+  };
   const { user, logOut } = useAuth();
   return (
     <>
@@ -69,6 +76,7 @@ function SettingsScreen({ navigation }) {
           </TouchableOpacity>
         </View>
         <ScrollView style={styles.settingsContainer}>
+          <View style={styles.separator} />
           <Form
             initialValues={{
               Privacy: null,
@@ -105,6 +113,26 @@ function SettingsScreen({ navigation }) {
               <SubmitButton title="Save" color="primary" />
             </View>
           </Form>
+          <View style={styles.separator} />
+          <Form
+            initialValues={{
+              Privacy: null,
+              Color: null,
+            }}
+            onSubmit={handleDeleteAccountSubmit}
+            validationSchema={deleteAccountValidationSchema}
+          >
+            <View style={styles.inputs}>
+              <AppText style={styles.deleteHeader}>Delete Account</AppText>
+              <AppText style={styles.pickerInfo}>
+                Enter your email and password to permanentely delete your
+                account
+              </AppText>
+            </View>
+            <View style={styles.submitButton}>
+              <SubmitButton title="Submit" color="danger" />
+            </View>
+          </Form>
         </ScrollView>
       </Screen>
     </>
@@ -114,7 +142,6 @@ function SettingsScreen({ navigation }) {
 const styles = StyleSheet.create({
   screen: {
     padding: Platform.OS === "android" ? 10 : 20,
-    backgroundColor: colors.light,
   },
   header: {
     fontSize: 40,
@@ -130,13 +157,23 @@ const styles = StyleSheet.create({
   settingsContainer: {
     margin: 20,
   },
+  separator: {
+    height: 1,
+    backgroundColor: colors.medium,
+    margin: 25,
+  },
   pickerHeader: {
-    fontSize: 30,
+    fontSize: 35,
     textAlign: "center",
     color: colors.primary,
   },
+  deleteHeader: {
+    fontSize: 35,
+    textAlign: "center",
+    color: colors.danger,
+  },
   pickerInfo: {
-    marginVertical: 5,
+    marginVertical: 10,
     textAlign: "center",
   },
 });
