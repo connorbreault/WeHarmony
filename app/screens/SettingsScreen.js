@@ -46,11 +46,11 @@ function SettingsScreen({ navigation }) {
       value: 2,
     },
   ];
-  const validationSchema = Yup.object().shape({
+  const settingValidationSchema = Yup.object().shape({
     Privacy: Yup.object().required().nullable().label("Privacy"),
     Color: Yup.object().required().nullable().label("Color"),
   });
-  const handleSubmit = (values) => {
+  const handleSettingSubmit = (values) => {
     console.log(values.Privacy.label);
     console.log(values.Color.label);
   };
@@ -74,8 +74,8 @@ function SettingsScreen({ navigation }) {
               Privacy: null,
               Color: null,
             }}
-            onSubmit={handleSubmit}
-            validationSchema={validationSchema}
+            onSubmit={handleSettingSubmit}
+            validationSchema={settingValidationSchema}
           >
             <View style={styles.inputs}>
               <AppText style={styles.pickerHeader}>Privacy</AppText>
