@@ -76,20 +76,22 @@ function SettingsScreen({ navigation }) {
   const handleInitialDeleteSubmit = async ({ email, password }) => {
     console.log(email);
     console.log(password);
-    // console.log(values.Email);
-    // console.log(values.Password);
     if (email === user.email) {
       setDeleteModalVisible(!deleteModalVisible);
     } else setInitialDeleteError(!initialDeleteError);
   };
   const handleModalDeleteSubmit = ({ email, password }) => {
     if (email === user.email) {
-      logOut();
+      setDeleteModalVisible(!deleteModalVisible);
+      setAccountDeletedModalVisible(!accountDeletedModalVisible);
     } else setModalDeleteError(!modalDeleteError);
   };
 
   const { user, logOut } = useAuth();
   const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+  const [accountDeletedModalVisible, setAccountDeletedModalVisible] = useState(
+    false
+  );
 
   const [initialDeleteError, setInitialDeleteError] = useState();
   const [modalDeleteError, setModalDeleteError] = useState();
@@ -241,6 +243,30 @@ function SettingsScreen({ navigation }) {
                       title="Cancel"
                       onPress={() => setDeleteModalVisible(!deleteModalVisible)}
                     />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </View>
+          <View style={styles.centeredView}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={accountDeletedModalVisible}
+              onRequestClose={() => {
+                setAccountDeletedModalVisible(!accountDeletedModalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <AppText style={styles.modalTextDanger}>
+                    Account deleted
+                  </AppText>
+                  <AppText style={styles.pickerInfo}>
+                    We're sad to see you go :(
+                  </AppText>
+                  <TouchableOpacity>
+                    <Button title="Okay" onPress={() => logOut()} />
                   </TouchableOpacity>
                 </View>
               </View>
