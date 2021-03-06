@@ -17,7 +17,7 @@ import {
 
 function EditVideosButton(props) {
   const validationSchema = Yup.object().shape({
-    video1: Yup.string().required().label("videoOne"),
+    video1: Yup.object().nullable().label("video1"),
     video2: Yup.object().nullable().label("video2"),
     video3: Yup.object().nullable().label("video3"),
   });

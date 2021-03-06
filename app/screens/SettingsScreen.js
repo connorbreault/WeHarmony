@@ -1,19 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  View,
+  Modal,
   ScrollView,
   StyleSheet,
   Text,
   TouchableOpacity,
+  View,
 } from "react-native";
 import * as Yup from "yup";
 
 import colors from "../config/colors";
 import useAuth from "../auth/useAuth";
+import authApi from "../api/auth";
 
 import AppText from "../components/Text";
+import Button from "../components/Button";
 import CategoryPickerItem from "../components/CategoryPickerItem";
-import { Form, FormPicker as Picker, SubmitButton } from "../components/forms";
+import {
+  ErrorMessage,
+  Form,
+  FormField,
+  FormPicker as Picker,
+  SubmitButton,
+} from "../components/forms";
 import Icon from "../components/Icon";
 import Screen from "../components/Screen";
 
@@ -46,22 +55,44 @@ function SettingsScreen({ navigation }) {
       value: 2,
     },
   ];
+
   const settingValidationSchema = Yup.object().shape({
     Privacy: Yup.object().required().nullable().label("Privacy"),
     Color: Yup.object().required().nullable().label("Color"),
   });
+  const initialDeleteValidationSchema = Yup.object().shape({
+    email: Yup.string().required().email().label("email"),
+    password: Yup.string().required().min(4).label("password"),
+  });
+  const modalDeleteValidationSchema = Yup.object().shape({
+    email: Yup.string().required().email().label("email"),
+    password: Yup.string().required().min(4).label("password"),
+  });
+
   const handleSettingSubmit = (values) => {
     console.log(values.Privacy.label);
     console.log(values.Color.label);
   };
-  const deleteAccountValidationSchema = Yup.object().shape({
-    Privacy: Yup.object().required().nullable().label("Privacy"),
-    Color: Yup.object().required().nullable().label("Color"),
-  });
-  const handleDeleteAccountSubmit = (values) => {
-    console.log(values);
+  const handleInitialDeleteSubmit = async ({ email, password }) => {
+    console.log(email);
+    console.log(password);
+    // console.log(values.Email);
+    // console.log(values.Password);
+    if (email === user.email) {
+      setDeleteModalVisible(!deleteModalVisible);
+    } else setInitialDeleteError(!initialDeleteError);
   };
+  const handleModalDeleteSubmit = ({ email, password }) => {
+    if (email === user.email) {
+      logOut();
+    } else setModalDeleteError(!modalDeleteError);
+  };
+
   const { user, logOut } = useAuth();
+  const [deleteModalVisible, setDeleteModalVisible] = useState(false);
+
+  const [initialDeleteError, setInitialDeleteError] = useState();
+  const [modalDeleteError, setModalDeleteError] = useState();
   return (
     <>
       <Screen style={styles.screen}>
@@ -116,11 +147,11 @@ function SettingsScreen({ navigation }) {
           <View style={styles.separator} />
           <Form
             initialValues={{
-              Privacy: null,
-              Color: null,
+              email: null,
+              password: null,
             }}
-            onSubmit={handleDeleteAccountSubmit}
-            validationSchema={deleteAccountValidationSchema}
+            onSubmit={handleInitialDeleteSubmit}
+            validationSchema={initialDeleteValidationSchema}
           >
             <View style={styles.inputs}>
               <AppText style={styles.deleteHeader}>Delete Account</AppText>
@@ -129,10 +160,92 @@ function SettingsScreen({ navigation }) {
                 account
               </AppText>
             </View>
+            <ErrorMessage
+              error="Invalid email and/or password"
+              visible={initialDeleteError}
+            />
+            <FormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="account"
+              name="email"
+              placeholder="Email"
+            />
+            <FormField
+              autoCapitalize="none"
+              autoCorrect={false}
+              icon="lock"
+              name="password"
+              placeholder="Password"
+              secureTextEntry
+              textContentType="password"
+            />
             <View style={styles.submitButton}>
-              <SubmitButton title="Submit" color="danger" />
+              <SubmitButton title="Delete account" color="danger" />
             </View>
           </Form>
+          <View style={styles.centeredView}>
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={deleteModalVisible}
+              onRequestClose={() => {
+                setDeleteModalVisible(!deleteModalVisible);
+              }}
+            >
+              <View style={styles.centeredView}>
+                <View style={styles.modalView}>
+                  <AppText style={styles.modalTextDanger}>
+                    This will permanently delete your account
+                  </AppText>
+                  <Form
+                    initialValues={{
+                      email: null,
+                      password: null,
+                    }}
+                    onSubmit={handleModalDeleteSubmit}
+                    validationSchema={modalDeleteValidationSchema}
+                  >
+                    <View style={styles.inputs}>
+                      <AppText style={styles.pickerInfo}>
+                        Re-Enter your email and password to permanentely delete
+                        your account
+                      </AppText>
+                    </View>
+                    <ErrorMessage
+                      error="Invalid email and/or password"
+                      visible={modalDeleteError}
+                    />
+                    <FormField
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      icon="account"
+                      name="email"
+                      placeholder="Email"
+                    />
+                    <FormField
+                      autoCapitalize="none"
+                      autoCorrect={false}
+                      icon="lock"
+                      name="password"
+                      placeholder="Password"
+                      secureTextEntry
+                      textContentType="password"
+                    />
+                    <View style={styles.submitButton}>
+                      <SubmitButton title="Delete account" color="danger" />
+                    </View>
+                  </Form>
+                  <TouchableOpacity>
+                    <Button
+                      title="Cancel"
+                      onPress={() => setDeleteModalVisible(!deleteModalVisible)}
+                    />
+                  </TouchableOpacity>
+                </View>
+              </View>
+            </Modal>
+          </View>
         </ScrollView>
       </Screen>
     </>
@@ -175,6 +288,41 @@ const styles = StyleSheet.create({
   pickerInfo: {
     marginVertical: 10,
     textAlign: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+    width: "80%",
+  },
+  modalText: {
+    fontSize: 30,
+    marginBottom: 15,
+    textAlign: "center",
+    fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
+  },
+  modalTextDanger: {
+    color: colors.danger,
+    fontSize: 30,
+    marginBottom: 15,
+    textAlign: "center",
+    fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
   },
 });
 export default SettingsScreen;
