@@ -25,6 +25,7 @@ import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
 import UserVideo from "../components/UserVideo";
 import EditProfileButton from "../components/modals/EditProfileButton";
 import EditVideosButton from "../components/modals/EditVideosButton";
+import AboutUs from "../components/modals/AboutUs";
 
 function AccountScreen({ navigation }) {
   // useEffect(() => {
@@ -120,13 +121,14 @@ function AccountScreen({ navigation }) {
             }
             onPress={() => navigation.navigate("Settings")}
           />
-          <ListItem
+          {/* <ListItem
             title="About Us"
             IconComponent={
               <Icon name="music-note" backgroundColor={colors.dark} />
             }
             onPress={() => navigation.navigate("AboutUs")}
-          />
+          /> */}
+          <AboutUs />
         </View>
       </ScrollView>
     </Screen>
