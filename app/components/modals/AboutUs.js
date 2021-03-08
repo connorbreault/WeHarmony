@@ -43,10 +43,10 @@ function AboutUs(props) {
               </View>
               <ScrollView style={styles.scrollView}>
                 <AppText style={styles.modalText}>
-                  Fed up with social media's algorithms cutting the platform for
-                  local musicians, WeHarmony was created to be a genuine tool
-                  for musicians to market their music and get in touch with
-                  other local musicians.
+                  Fed up with social media algorithms cutting the platform for
+                  starting musicians, WeHarmony was created to be a genuine tool
+                  for musicians to market their music and get in touch with the
+                  musicians in their local scene.
                 </AppText>
                 <AppText style={styles.modalText}>
                   But why stop at musicians?
@@ -66,6 +66,7 @@ function AboutUs(props) {
                     tint="light"
                     source={require("../../assets/profilePic.jpeg")}
                   />
+                  <AppText style={styles.modalText}>Connor Breault</AppText>
                 </View>
               </ScrollView>
             </View>
