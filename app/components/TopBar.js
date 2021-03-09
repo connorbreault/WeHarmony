@@ -21,6 +21,7 @@ import NotificationsButton from "./NotificationsButton";
 import NotificationCard from "./NotificationCard";
 import MessageCard from "./MessageCard";
 import MessagesButton from "./MessagesButton";
+import AboutUs from "./modals/AboutUs";
 
 const notifications = [
   {
@@ -185,13 +186,12 @@ function TopBar(props) {
                 ]);
               }}
             />
-            <TouchableOpacity
-              onPress={() => {
-                console.log("about");
-              }}
-            >
-              <Text style={styles.aboutUs}>About WeHarmony</Text>
-            </TouchableOpacity>
+            <View style={styles.modalLogoContainer}>
+              <Image
+                style={styles.modalLogo}
+                source={require("../assets/textLogo.png")}
+              />
+            </View>
           </View>
         </View>
       </Modal>
@@ -236,13 +236,12 @@ function TopBar(props) {
                 />
               )}
             />
-            <TouchableOpacity
-              onPress={() => {
-                console.log("about");
-              }}
-            >
-              <Text style={styles.aboutUs}>About WeHarmony</Text>
-            </TouchableOpacity>
+            <View style={styles.modalLogoContainer}>
+              <Image
+                style={styles.modalLogo}
+                source={require("../assets/textLogo.png")}
+              />
+            </View>
           </View>
         </View>
       </Modal>
@@ -332,6 +331,16 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+  },
+  modalLogoContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginBottom: -20,
+  },
+  modalLogo: {
+    width: "70%",
+    height: "70%",
   },
 });
 export default TopBar;

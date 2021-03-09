@@ -1,5 +1,12 @@
 import React, { useState } from "react";
-import { View, Image, StyleSheet, Modal, TouchableOpacity } from "react-native";
+import {
+  View,
+  Image,
+  StyleSheet,
+  Modal,
+  TouchableOpacity,
+  Text,
+} from "react-native";
 
 import colors from "../../config/colors";
 
@@ -136,6 +143,16 @@ const styles = StyleSheet.create({
     width: 200,
     height: 200,
     borderRadius: 100,
+  },
+  textItem: {
+    textAlign: "center",
+    margin: 0,
+    color: colors.medium,
+    fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
+    fontWeight: "700",
+    fontStyle: "italic",
+    textDecorationLine: "underline",
+    textDecorationColor: colors.primary,
   },
 });
 export default AboutUs;

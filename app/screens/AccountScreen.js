@@ -31,6 +31,7 @@ function AccountScreen({ navigation }) {
   // useEffect(() => {
   //   console.log(user.profilePic);
   // });
+  const [aboutUsVisible, setAboutUsVisible] = useState(true);
   const { user, logOut } = useAuth();
   const [playing, setPlaying] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
@@ -121,13 +122,6 @@ function AccountScreen({ navigation }) {
             }
             onPress={() => navigation.navigate("Settings")}
           />
-          {/* <ListItem
-            title="About Us"
-            IconComponent={
-              <Icon name="music-note" backgroundColor={colors.dark} />
-            }
-            onPress={() => navigation.navigate("AboutUs")}
-          /> */}
           <AboutUs />
         </View>
       </ScrollView>
