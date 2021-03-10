@@ -1,12 +1,27 @@
 import React, { useState, useEffect } from "react";
-import { Image, Modal, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  Image,
+  Modal,
+  StyleSheet,
+  Text,
+  View,
+  ScrollView,
+  TextInput,
+} from "react-native";
 import * as Yup from "yup";
+import { TouchableOpacity } from "react-native-gesture-handler";
+import { GoogleAutoComplete } from "react-native-google-autocomplete";
 
+import API_KEY from "../../../key";
+import colors from "../../config/colors";
 import useAuth from "../../auth/useAuth";
 import searchParams from "../../config/searchParams";
+import users from "../../api/users";
 
-import colors from "../../config/colors";
+import AppText from "../Text";
 import Button from "../Button";
+import CategoryPickerItem from "../CategoryPickerItem";
 import {
   ErrorMessage,
   Form,
@@ -14,22 +29,25 @@ import {
   SubmitButton,
   FormPicker as Picker,
 } from "../forms";
-import CategoryPickerItem from "../CategoryPickerItem";
-import { ScrollView, TouchableOpacity } from "react-native-gesture-handler";
-import users from "../../api/users";
+import LocationItem from "../LocationItem";
+import Icon from "../Icon";
 
 function EditProfileButton(props) {
   const { user, logOut } = useAuth();
   const [error, setError] = useState();
 
+  const [details, fetchDetails] = useState(false);
+  const [latitude, setLatitude] = useState();
+  const [longitude, setLongitude] = useState();
+
   const [mainModalVisible, setMainModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
+  const [locationModalVisible, setLocationModalVisible] = useState(false);
 
   const validationSchema = Yup.object().shape({
     name: Yup.string().required().label("Name"),
     instruments: Yup.object().nullable().label("Instruments"),
-    location: Yup.object().nullable().label("location"),
   });
   const emailValidationSchema = Yup.object().shape({
     oldEmail: Yup.string().required().min(4).label("oldEmail"),
@@ -53,6 +71,11 @@ function EditProfileButton(props) {
   };
   const handlePasswordSubmit = (values) => {
     console.log(values);
+  };
+
+  const changeLocation = () => {
+    setMainModalVisible(false);
+    setLocationModalVisible(true);
   };
 
   const openEmailModal = () => {
@@ -125,7 +148,6 @@ function EditProfileButton(props) {
                 initialValues={{
                   name: user.name,
                   Instruments: "",
-                  location: user.location,
                 }}
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
@@ -137,13 +159,6 @@ function EditProfileButton(props) {
                   icon="account"
                   name="name"
                   placeholder="Name"
-                />
-                <Text style={styles.header}>Your Location:</Text>
-                <FormField
-                  autoCorrect={false}
-                  icon="target"
-                  name="location"
-                  placeholder="Location"
                 />
                 <Text style={styles.header}>Your current talents:</Text>
                 <View style={styles.instrumentsContainer}>
@@ -161,6 +176,14 @@ function EditProfileButton(props) {
                   numberOfColumns={3}
                   PickerItemComponent={CategoryPickerItem}
                   placeholder="Add New Talent"
+                />
+                <View style={styles.separator} />
+                <Text style={styles.header}>Your Location:</Text>
+                <AppText style={styles.userLocation}>{user.location}</AppText>
+                <Button
+                  onPress={() => changeLocation()}
+                  title="Change"
+                  color="medium"
                 />
                 <View style={styles.separator} />
                 <SubmitButton
@@ -327,6 +350,67 @@ function EditProfileButton(props) {
           </View>
         </View>
       </Modal>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={locationModalVisible}
+        onRequestClose={() => {
+          setLocationModalVisible(!locationModalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+            <Text style={styles.modalText}>Change Location</Text>
+            <AppText>Your current location is</AppText>
+            <AppText>{user.location}</AppText>
+            <GoogleAutoComplete
+              apiKey={API_KEY.API_KEY}
+              debounce={500}
+              minLength={3}
+            >
+              {({
+                handleTextChange,
+                locationResults,
+                fetchDetails,
+                isSearching,
+                inputValue,
+                clearSearch,
+              }) => (
+                <>
+                  {console.log("LocationResults", locationResults)}
+                  <View style={styles.inputWrapper}>
+                    <TextInput
+                      style={styles.textInput}
+                      placeholder="Search a city"
+                      onChangeText={handleTextChange}
+                      value={inputValue}
+                    />
+                    <TouchableOpacity onPress={clearSearch}>
+                      <Icon
+                        name="close"
+                        backgroundColor={colors.medium}
+                        size={35}
+                      />
+                    </TouchableOpacity>
+                  </View>
+                  {isSearching && (
+                    <ActivityIndicator size="large" color={colors.primary} />
+                  )}
+                  <ScrollView>
+                    {locationResults.map((el) => (
+                      <LocationItem
+                        {...el}
+                        key={el.place_id}
+                        fetchDetails={fetchDetails}
+                      />
+                    ))}
+                  </ScrollView>
+                </>
+              )}
+            </GoogleAutoComplete>
+          </View>
+        </View>
+      </Modal>
     </>
   );
 }
@@ -363,6 +447,9 @@ const styles = StyleSheet.create({
   },
   instrumentsContainer: {
     paddingLeft: 20,
+    flex: 1,
+    justifyContent: "center",
+    alignContent: "center",
   },
   modalView: {
     margin: 20,
@@ -395,6 +482,25 @@ const styles = StyleSheet.create({
     width: 150,
     height: 150,
     borderRadius: 75,
+  },
+  userLocation: {
+    textAlign: "center",
+    fontSize: 25,
+    fontStyle: "italic",
+  },
+  textInput: {
+    height: 40,
+    width: 250,
+    borderWidth: 1,
+    borderRadius: 15,
+    borderColor: colors.primary,
+    paddingHorizontal: 10,
+  },
+  inputWrapper: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
 });
 export default EditProfileButton;

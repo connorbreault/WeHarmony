@@ -26,11 +26,12 @@ import UserVideo from "../components/UserVideo";
 import EditProfileButton from "../components/modals/EditProfileButton";
 import EditVideosButton from "../components/modals/EditVideosButton";
 import AboutUs from "../components/modals/AboutUs";
+import API_KEY from "../../key";
 
 function AccountScreen({ navigation }) {
-  // useEffect(() => {
-  //   console.log(user.profilePic);
-  // });
+  useEffect(() => {
+    console.log(API_KEY.API_KEY);
+  }, []);
   const [aboutUsVisible, setAboutUsVisible] = useState(true);
   const { user, logOut } = useAuth();
   const [playing, setPlaying] = useState(false);
