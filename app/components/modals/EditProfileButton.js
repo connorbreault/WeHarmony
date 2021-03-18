@@ -73,27 +73,31 @@ function EditProfileButton(props) {
     console.log(values);
   };
 
-  const changeLocation = () => {
-    setMainModalVisible(false);
-    setLocationModalVisible(true);
+  const openLocationModal = () => {
+    setMainModalVisible(!mainModalVisible);
+    setLocationModalVisible(!locationModalVisible);
   };
 
   const openEmailModal = () => {
-    setMainModalVisible(false);
-    setEmailModalVisible(true);
+    setMainModalVisible(!mainModalVisible);
+    setEmailModalVisible(!emailModalVisible);
   };
   const closeEmailModal = () => {
-    setEmailModalVisible(false);
-    setMainModalVisible(true);
+    setMainModalVisible(!mainModalVisible);
+    setEmailModalVisible(!emailModalVisible);
   };
 
   const openPasswordModal = () => {
-    setMainModalVisible(false);
-    setPasswordModalVisible(true);
+    setMainModalVisible(!mainModalVisible);
+    setPasswordModalVisible(!passwordModalVisible);
   };
   const closePasswordModal = () => {
-    setPasswordModalVisible(false);
-    setMainModalVisible(true);
+    setMainModalVisible(!mainModalVisible);
+    setPasswordModalVisible(!passwordModalVisible);
+  };
+  const closeLocationModal = () => {
+    setMainModalVisible(!mainModalVisible);
+    setLocationModalVisible(!locationModalVisible);
   };
 
   // const handleSubmit = async (userInfo) => {
@@ -177,19 +181,15 @@ function EditProfileButton(props) {
                   PickerItemComponent={CategoryPickerItem}
                   placeholder="Add New Talent"
                 />
-                <View style={styles.separator} />
-                <Text style={styles.header}>Your Location:</Text>
-                <AppText style={styles.userLocation}>{user.location}</AppText>
-                <Button
-                  onPress={() => changeLocation()}
-                  title="Change"
-                  color="medium"
-                />
-                <View style={styles.separator} />
                 <SubmitButton
                   title="Save"
                   onPress={() => console.log("Something")}
                 />
+                <View style={styles.separator} />
+                <Text style={styles.header}>Your Location:</Text>
+                <AppText style={styles.userLocation}>{user.location}</AppText>
+                <Button onPress={() => openLocationModal()} title="Change" />
+                <View style={styles.separator} />
                 <Button
                   backgroundColor={colors.light}
                   color="medium"
@@ -369,12 +369,12 @@ function EditProfileButton(props) {
               minLength={3}
             >
               {({
-                handleTextChange,
-                locationResults,
+                clearSearch,
                 fetchDetails,
+                handleTextChange,
                 isSearching,
                 inputValue,
-                clearSearch,
+                locationResults,
               }) => (
                 <>
                   {console.log("LocationResults", locationResults)}
@@ -408,6 +408,12 @@ function EditProfileButton(props) {
                 </>
               )}
             </GoogleAutoComplete>
+            <Button title="Save" />
+            <Button
+              color="medium"
+              title="Cancel"
+              onPress={() => closeLocationModal()}
+            />
           </View>
         </View>
       </Modal>

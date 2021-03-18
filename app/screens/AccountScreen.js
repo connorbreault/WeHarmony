@@ -29,19 +29,10 @@ import AboutUs from "../components/modals/AboutUs";
 import API_KEY from "../../key";
 
 function AccountScreen({ navigation }) {
-  useEffect(() => {
-    console.log(API_KEY.API_KEY);
-  }, []);
   const [aboutUsVisible, setAboutUsVisible] = useState(true);
   const { user, logOut } = useAuth();
   const [playing, setPlaying] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
-
-  const onStateChange = useCallback((state) => {
-    if (state === "ended") {
-      setPlaying(false);
-    }
-  }, []);
 
   return (
     <Screen style={styles.screen}>
