@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
+import * as Yup from "yup";
 
 import colors from "../../config/colors";
 
@@ -15,9 +16,31 @@ import Button from "../Button";
 import Icon from "../Icon";
 import ListItem from "../lists/ListItem";
 import { ScrollView } from "react-native-gesture-handler";
+import {
+  ErrorMessage,
+  Form,
+  FormField,
+  SubmitButton,
+  FormPicker as Picker,
+} from "../forms";
 
 function AboutUs(props) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [suggestionModalVisible, setSuggestionModalVisible] = useState(false);
+  const [error, setError] = useState();
+
+  const validationSchema = Yup.object().shape({
+    message: Yup.string().required().label("message"),
+  });
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
+
+  const toggleSuggestionModal = () => {
+    setModalVisible(!modalVisible);
+    setSuggestionModalVisible(!suggestionModalVisible);
+  };
+
   return (
     <>
       <ListItem
@@ -105,8 +128,53 @@ function AboutUs(props) {
                 <Button
                   title="Contact Me"
                   color="medium"
-                  onPress={() => console.log("Contact btn")}
+                  onPress={() => toggleSuggestionModal()}
                 />
+              </ScrollView>
+            </View>
+          </View>
+        </Modal>
+
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={suggestionModalVisible}
+          onRequestClose={() => {
+            setSuggestionModalVisible(!suggestionModalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <View style={styles.headerContainer}>
+                <AppText style={styles.secondaryHeader}>Suggestions:</AppText>
+                <TouchableOpacity onPress={() => toggleSuggestionModal()}>
+                  <Icon
+                    name="window-close"
+                    backgroundColor={colors.primary}
+                    size={50}
+                  />
+                </TouchableOpacity>
+              </View>
+              <ScrollView style={styles.scrollView}>
+                <Form
+                  initialValues={{
+                    message: "",
+                  }}
+                  onSubmit={handleSubmit}
+                  validationSchema={validationSchema}
+                >
+                  <ErrorMessage error={error} visible={error} />
+                  <FormField
+                    autoCorrect={false}
+                    icon="message"
+                    name="message"
+                    placeholder="Leave a suggestion"
+                  />
+                  <SubmitButton
+                    title="Send"
+                    onPress={() => console.log("Something")}
+                  />
+                </Form>
               </ScrollView>
             </View>
           </View>
