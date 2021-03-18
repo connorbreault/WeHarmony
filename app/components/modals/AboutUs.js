@@ -49,6 +49,29 @@ function AboutUs(props) {
                 </TouchableOpacity>
               </View>
               <ScrollView style={styles.scrollView}>
+                <View style={styles.developerContainer}>
+                  <AppText style={styles.developerHeader}>
+                    Meet the developer
+                  </AppText>
+                  <Image
+                    style={styles.image}
+                    tint="light"
+                    source={require("../../assets/profilePic.jpeg")}
+                  />
+                  <AppText style={styles.secondaryHeader}>
+                    Connor Breault
+                  </AppText>
+                  <AppText style={styles.modalText}>
+                    Sole developer and designer of WeHarmony based out of
+                    Sacramento CA.
+                  </AppText>
+                  <AppText style={styles.modalText}>
+                    Fed up with social media algorithms cutting the platform for
+                    starting musicians, WeHarmony was created to be a genuine
+                    tool for musicians to market their music and get in touch
+                    with the musicians in their local scene.
+                  </AppText>
+                </View>
                 <AppText style={styles.modalText}>
                   Fed up with social media algorithms cutting the platform for
                   starting musicians, WeHarmony was created to be a genuine tool
@@ -64,17 +87,26 @@ function AboutUs(props) {
                   place to showcase their work and link up with potential
                   clients.
                 </AppText>
-                <View style={styles.developerContainer}>
-                  <AppText style={styles.developerHeader}>
-                    Meet the developer
-                  </AppText>
-                  <Image
-                    style={styles.image}
-                    tint="light"
-                    source={require("../../assets/profilePic.jpeg")}
-                  />
-                  <AppText style={styles.modalText}>Connor Breault</AppText>
-                </View>
+                <AppText style={styles.modalText}>
+                  WeHarmony hopes to be an all inclusive space where everyone
+                  has a place to showcase their skills and make the most out of
+                  their local music scene.
+                </AppText>
+                <View style={styles.separator} />
+                <AppText style={styles.developerHeader}>
+                  Love WeHarmony?
+                </AppText>
+                <Button
+                  title="Donate"
+                  onPress={() => console.log("Donate btn")}
+                />
+                <View style={styles.separator} />
+                <AppText style={styles.secondaryHeader}>Suggestions?</AppText>
+                <Button
+                  title="Contact Me"
+                  color="medium"
+                  onPress={() => console.log("Contact btn")}
+                />
               </ScrollView>
             </View>
           </View>
@@ -139,6 +171,13 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     textAlign: "center",
   },
+  secondaryHeader: {
+    color: colors.dark,
+    fontSize: 25,
+    fontWeight: "500",
+    fontStyle: "italic",
+    textAlign: "center",
+  },
   image: {
     width: 200,
     height: 200,
@@ -153,6 +192,11 @@ const styles = StyleSheet.create({
     fontStyle: "italic",
     textDecorationLine: "underline",
     textDecorationColor: colors.primary,
+  },
+  separator: {
+    height: 1,
+    backgroundColor: colors.medium,
+    margin: 20,
   },
 });
 export default AboutUs;

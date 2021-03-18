@@ -190,6 +190,7 @@ function EditProfileButton(props) {
                 <AppText style={styles.userLocation}>{user.location}</AppText>
                 <Button onPress={() => openLocationModal()} title="Change" />
                 <View style={styles.separator} />
+                <AppText style={styles.header}>Extra settings:</AppText>
                 <Button
                   backgroundColor={colors.light}
                   color="medium"
