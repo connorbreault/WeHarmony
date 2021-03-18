@@ -6,6 +6,7 @@ import AppText from "./Text";
 function LocationItem(props) {
   const _handlePress = async () => {
     const res = await props.fetchDetails(props.place_id);
+    console.log(res);
     return JSON.stringify(res);
   };
   return (

@@ -34,6 +34,12 @@ function AccountScreen({ navigation }) {
   const [playing, setPlaying] = useState(false);
   const [modalVisible, setModalVisible] = useState(false);
 
+  const onStateChange = useCallback((state) => {
+    if (state === "ended") {
+      setPlaying(false);
+    }
+  }, []);
+
   return (
     <Screen style={styles.screen}>
       <TopBar />

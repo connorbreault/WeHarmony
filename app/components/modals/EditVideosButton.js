@@ -27,9 +27,6 @@ function EditVideosButton(props) {
 
   const { user, logOut } = useAuth();
   const userLinks = user.links;
-  useEffect(() => {
-    console.log(userLinks);
-  }, []);
   const [error, setError] = useState();
   const [modalVisible, setModalVisible] = useState(false);
   return (
