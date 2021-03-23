@@ -217,32 +217,30 @@ function SearchScreen() {
         validationSchema={validationSchema}
       >
         <AppText style={styles.header}>Who are you looking for?</AppText>
-        <View style={styles.inputs}>
-          <Picker
-            items={Categories}
-            name="Category"
-            numberOfColumns={3}
-            PickerItemComponent={CategoryPickerItem}
-            placeholder="Category"
-            width="80%"
-          />
-          <Picker
-            items={Genres}
-            name="Genre"
-            numberOfColumns={3}
-            PickerItemComponent={CategoryPickerItem}
-            placeholder="Genre"
-            width="80%"
-          />
-          <Picker
-            items={SearchLocation}
-            name="SearchLocation"
-            numberOfColumns={3}
-            PickerItemComponent={CategoryPickerItem}
-            placeholder="Location"
-            width="80%"
-          />
-        </View>
+        <Picker
+          items={Categories}
+          name="Category"
+          numberOfColumns={3}
+          PickerItemComponent={CategoryPickerItem}
+          placeholder="Category"
+          width="80%"
+        />
+        <Picker
+          items={Genres}
+          name="Genre"
+          numberOfColumns={3}
+          PickerItemComponent={CategoryPickerItem}
+          placeholder="Genre"
+          width="80%"
+        />
+        <Picker
+          items={SearchLocation}
+          name="SearchLocation"
+          numberOfColumns={3}
+          PickerItemComponent={CategoryPickerItem}
+          placeholder="Location"
+          width="80%"
+        />
         <View style={styles.submitButton}>
           <SubmitButton title="Search" color="medium" />
         </View>
@@ -261,9 +259,7 @@ const styles = StyleSheet.create({
     color: colors.white,
     fontSize: 25,
     fontWeight: "700",
-  },
-  inputs: {
-    marginVertical: 10,
+    textAlign: "center",
   },
   logo: {
     width: 155,
@@ -277,12 +273,6 @@ const styles = StyleSheet.create({
   },
   submitButton: {
     width: "70%",
-  },
-  tagline: {
-    color: colors.white,
-    fontSize: 25,
-    fontWeight: "600",
-    paddingVertical: 20,
   },
 });
 export default SearchScreen;
