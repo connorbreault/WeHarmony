@@ -92,6 +92,74 @@ const Categories = [
     value: 12,
   },
 ];
+const Genres = [
+  {
+    backgroundColor: colors.primary,
+    icon: "all-inclusive",
+    label: "Any",
+    value: 1,
+  },
+  {
+    backgroundColor: colors.medium,
+    icon: "saxophone",
+    label: "Blues",
+    value: 2,
+  },
+  {
+    backgroundColor: colors.dark,
+    icon: "music-accidental-natural",
+    label: "Jazz",
+    value: 3,
+  },
+  {
+    backgroundColor: colors.primary,
+    icon: "skull",
+    label: "Metal",
+    value: 4,
+  },
+  {
+    backgroundColor: colors.medium,
+    icon: "guitar-pick",
+    label: "Rock",
+    value: 5,
+  },
+  {
+    backgroundColor: colors.dark,
+    icon: "piano",
+    label: "Indie",
+    value: 6,
+  },
+  {
+    backgroundColor: colors.primary,
+    icon: "music-clef-treble",
+    label: "Alternative",
+    value: 7,
+  },
+  {
+    backgroundColor: colors.medium,
+    icon: "laptop-mac",
+    label: "Electronic",
+    value: 8,
+  },
+  {
+    backgroundColor: colors.dark,
+    FAicon: "guitar",
+    label: "Country",
+    value: 9,
+  },
+  {
+    backgroundColor: colors.primary,
+    icon: "guitar-acoustic",
+    label: "Bluegrass",
+    value: 10,
+  },
+  {
+    backgroundColor: colors.medium,
+    FAicon: "music",
+    label: "Classical",
+    value: 10,
+  },
+];
 const SearchLocation = [
   {
     backgroundColor: colors.primary,
@@ -115,14 +183,15 @@ function SearchScreen() {
 
   const validationSchema = Yup.object().shape({
     Category: Yup.object().required().nullable().label("Category"),
+    Genre: Yup.object().required().nullable().label("Genre"),
     SearchLocation: Yup.object().required().nullable().label("Location"),
   });
 
   const handleSubmit = (search) => {
     if (search.SearchLocation.value === 1) {
-      console.log(search.Category.label, "local");
+      console.log(search.Category.label, search.Genre.label, "local");
     } else {
-      console.log(search.Category.label, "global");
+      console.log(search.Category.label, search.Genre.label, "global");
     }
   };
 
@@ -141,6 +210,7 @@ function SearchScreen() {
       <Form
         initialValues={{
           Category: null,
+          Genre: null,
           SearchLocation: null,
         }}
         onSubmit={handleSubmit}
@@ -154,6 +224,14 @@ function SearchScreen() {
             numberOfColumns={3}
             PickerItemComponent={CategoryPickerItem}
             placeholder="Category"
+            width="80%"
+          />
+          <Picker
+            items={Genres}
+            name="Genre"
+            numberOfColumns={3}
+            PickerItemComponent={CategoryPickerItem}
+            placeholder="Genre"
             width="80%"
           />
           <Picker
