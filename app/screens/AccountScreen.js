@@ -29,6 +29,9 @@ import AboutUs from "../components/modals/AboutUs";
 import API_KEY from "../../key";
 
 function AccountScreen({ navigation }) {
+  useEffect(() => {
+    console.log(user.profilePic);
+  }, []);
   const [aboutUsVisible, setAboutUsVisible] = useState(true);
   const { user, logOut } = useAuth();
   const [playing, setPlaying] = useState(false);
@@ -50,7 +53,7 @@ function AccountScreen({ navigation }) {
               source={{
                 uri: user.profilePic,
               }}
-              style={styles.userPic}
+              style={styles.userProfilePhoto}
             />
             <View style={styles.userNameContainer}>
               <AppText style={styles.userName}>{user.name}</AppText>
@@ -68,13 +71,45 @@ function AccountScreen({ navigation }) {
         </View>
 
         <View style={styles.container}>
-          <View style={styles.videoHeaderContainer}>
-            <Text style={styles.videoHeader}>Your Videos</Text>
-            <EditVideosButton />
+          <View style={styles.contentHeaderContainer}>
+            <Text style={styles.contentHeader}>Your Videos</Text>
+            {/* <EditVideosButton /> */}
           </View>
-          {user.links.map((item) => {
-            return <UserVideo key={item.key} videoId={item.link} />;
-          })}
+          {user.links.length <= 0 && (
+            <AppText style={{ textAlign: "center" }}>
+              Add a video by clicking the gear icon above!
+            </AppText>
+          )}
+          {user.links.length > 0 &&
+            user.links.map((item) => {
+              return <UserVideo key={item.key} videoId={item.link} />;
+            })}
+        </View>
+        <View style={styles.container}>
+          <View style={styles.contentHeaderContainer}>
+            <Text style={styles.contentHeader}>Your Photos</Text>
+            {/* <EditVideosButton /> */}
+          </View>
+          <View style={styles.photoContainer}>
+            {user.photos.length <= 0 && (
+              <AppText style={{ textAlign: "center" }}>
+                Add a photo by clicking the gear icon above!
+              </AppText>
+            )}
+            {user.photos.length > 0 &&
+              user.photos.map((item) => {
+                console.log(item.fileName);
+                return (
+                  <Image
+                    key={item.key}
+                    source={{
+                      uri: item.fileName,
+                    }}
+                    style={styles.userPhoto}
+                  />
+                );
+              })}
+          </View>
         </View>
 
         <View style={styles.centeredView}>
@@ -191,18 +226,26 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  userPic: {
+  userProfilePhoto: {
     width: 100,
     height: 100,
     borderRadius: 50,
   },
-  videoHeader: {
+  userPhoto: {
+    width: 300,
+    height: 300,
+    marginVertical: 10,
+  },
+  photoContainer: {
+    alignItems: "center",
+  },
+  contentHeader: {
     fontSize: 35,
     fontFamily: Platform.OS === "android" ? "Roboto" : "Avenir",
     fontWeight: "500",
     color: colors.medium,
   },
-  videoHeaderContainer: {
+  contentHeaderContainer: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
