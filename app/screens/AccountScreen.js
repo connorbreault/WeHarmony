@@ -139,7 +139,6 @@ function AccountScreen({ navigation }) {
             </View>
           </Modal>
         </View>
-
         <View style={styles.container}>
           <ListItem
             title="Log Out"
