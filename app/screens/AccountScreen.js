@@ -111,7 +111,6 @@ function AccountScreen({ navigation }) {
               })}
           </View>
         </View>
-
         <View style={styles.centeredView}>
           <Modal
             animationType="slide"
