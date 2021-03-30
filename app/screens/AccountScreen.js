@@ -109,7 +109,7 @@ function AccountScreen({ navigation }) {
                   />
                 );
               })}
-          </View>
+          </View> 
         </View>
         <View style={styles.centeredView}>
           <Modal
