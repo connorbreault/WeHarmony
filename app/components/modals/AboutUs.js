@@ -25,29 +25,33 @@ import {
 } from "../forms";
 
 function AboutUs(props) {
+  // TOGGLE MODALS
   const [modalVisible, setModalVisible] = useState(false);
   const [suggestionModalVisible, setSuggestionModalVisible] = useState(false);
-  const [error, setError] = useState();
-
-  const validationSchema = Yup.object().shape({
-    message: Yup.string().required().label("message"),
-  });
-  const handleSubmit = (values) => {
-    console.log(values);
-  };
-
   const toggleSuggestionModal = () => {
     setModalVisible(!modalVisible);
     setSuggestionModalVisible(!suggestionModalVisible);
   };
 
+  // FORM SETUP LOGIC
+  const validationSchema = Yup.object().shape({
+    message: Yup.string().required().label("message"),
+  });
+  const [error, setError] = useState();
+  const handleSubmit = (values) => {
+    console.log(values);
+  };
+
   return (
     <>
+      {/* MODAL TRIGGER - LIST ITEM */}
       <ListItem
         title="About Us"
         IconComponent={<Icon name="music-note" backgroundColor={colors.dark} />}
         onPress={() => setModalVisible(!modalVisible)}
       />
+
+      {/* MODAL */}
       <View style={styles.centeredView}>
         <Modal
           animationType="slide"
@@ -61,6 +65,7 @@ function AboutUs(props) {
             <View style={styles.modalView}>
               <View style={styles.headerContainer}>
                 <AppText style={styles.header}>About</AppText>
+                {/* CLOSE BUTTON */}
                 <TouchableOpacity
                   onPress={() => setModalVisible(!modalVisible)}
                 >
@@ -71,6 +76,8 @@ function AboutUs(props) {
                   />
                 </TouchableOpacity>
               </View>
+
+              {/* === SCROLL CONTAINER === */}
               <ScrollView style={styles.scrollView}>
                 <View style={styles.developerContainer}>
                   <AppText style={styles.developerHeader}>
@@ -116,6 +123,7 @@ function AboutUs(props) {
                   their local music scene.
                 </AppText>
                 <View style={styles.separator} />
+                {/* === DONATE SECTION === */}
                 <AppText style={styles.developerHeader}>
                   Love WeHarmony?
                 </AppText>
@@ -124,6 +132,8 @@ function AboutUs(props) {
                   onPress={() => console.log("Donate btn")}
                 />
                 <View style={styles.separator} />
+
+                {/* === SUGGESTIONS SECTION === */}
                 <AppText style={styles.secondaryHeader}>Suggestions?</AppText>
                 <Button
                   title="Contact Me"
@@ -135,6 +145,7 @@ function AboutUs(props) {
           </View>
         </Modal>
 
+        {/* === SUGGESTIONS MODAL === */}
         <Modal
           animationType="slide"
           transparent={true}
@@ -147,6 +158,7 @@ function AboutUs(props) {
             <View style={styles.modalView}>
               <View style={styles.headerContainer}>
                 <AppText style={styles.secondaryHeader}>Suggestions:</AppText>
+                {/* CLOSE BUTTON */}
                 <TouchableOpacity onPress={() => toggleSuggestionModal()}>
                   <Icon
                     name="window-close"

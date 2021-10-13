@@ -16,6 +16,16 @@ import {
 } from "../forms";
 
 function EditVideosButton(props) {
+  // GET USER INFO
+  const { user, logOut } = useAuth();
+
+  // TOGGLE MODAL
+  const [modalVisible, setModalVisible] = useState(false);
+
+  const userLinks = user.links;
+
+  // FORM SETUP LOGIC
+  const [error, setError] = useState();
   const validationSchema = Yup.object().shape({
     video1: Yup.object().nullable().label("video1"),
     video2: Yup.object().nullable().label("video2"),
@@ -24,11 +34,6 @@ function EditVideosButton(props) {
   const handleSubmit = (values) => {
     console.log(values);
   };
-
-  const { user, logOut } = useAuth();
-  const userLinks = user.links;
-  const [error, setError] = useState();
-  const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
       <TouchableOpacity onPress={() => setModalVisible(true)}>
@@ -48,11 +53,13 @@ function EditVideosButton(props) {
               <Text style={styles.modalText}>Change Videos</Text>
               <View style={styles.separator} />
               <Form
-                initialValues={{
-                  video1: user.links[0].link,
-                  video2: user.links[1].link,
-                  video3: user.links[2].link,
-                }}
+                initialValues={
+                  {
+                    // video1: user.links[0].link,
+                    // video2: user.links[1].link,
+                    // video3: user.links[2].link,
+                  }
+                }
                 onSubmit={handleSubmit}
                 validationSchema={validationSchema}
               >

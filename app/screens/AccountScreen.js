@@ -29,32 +29,41 @@ import AboutUs from "../components/modals/AboutUs";
 import API_KEY from "../../key";
 
 function AccountScreen({ navigation }) {
-  useEffect(() => {
-    console.log(user.profilePic);
-  }, []);
-  const [aboutUsVisible, setAboutUsVisible] = useState(true);
+  // useEffect(() => {
+  //   console.log(user.profilePic);
+  // }, []);
   const { user, logOut } = useAuth();
-  const [playing, setPlaying] = useState(false);
-  const [modalVisible, setModalVisible] = useState(false);
 
+  // Video Toggle
+  const [playing, setPlaying] = useState(false);
   const onStateChange = useCallback((state) => {
     if (state === "ended") {
       setPlaying(false);
     }
   }, []);
 
+  // Modal Toggles
+  const [aboutUsVisible, setAboutUsVisible] = useState(true);
+  const [modalVisible, setModalVisible] = useState(false);
+
   return (
     <Screen style={styles.screen}>
       <TopBar />
+
+      {/* SCREEN SCROLL CONTAINER */}
       <ScrollView>
         <View style={styles.container}>
+          {/* USER CONTAINER */}
           <View style={styles.user}>
+            {/* PROFILE PIC */}
             <Image
               source={{
                 uri: user.profilePic,
               }}
               style={styles.userProfilePhoto}
             />
+
+            {/* USER INFO CONTAINER */}
             <View style={styles.userNameContainer}>
               <AppText style={styles.userName}>{user.name}</AppText>
               <AppText style={styles.userLocation}>{user.location}</AppText>
@@ -67,14 +76,19 @@ function AccountScreen({ navigation }) {
               })}
             </View>
           </View>
+
+          {/* EDIT PROFILE IMPORT */}
           <EditProfileButton />
         </View>
 
+        {/* USER VIDEO CONTENT CONTAINER */}
         <View style={styles.container}>
           <View style={styles.contentHeaderContainer}>
             <Text style={styles.contentHeader}>Your Videos</Text>
-            {/* <EditVideosButton /> */}
+            <EditVideosButton />
           </View>
+
+          {/* === USER VIDEO IF TRUE LOGIC === */}
           {user.links.length <= 0 && (
             <AppText style={{ textAlign: "center" }}>
               Add a video by clicking the gear icon above!
@@ -85,12 +99,15 @@ function AccountScreen({ navigation }) {
               return <UserVideo key={item.key} videoId={item.link} />;
             })}
         </View>
+
+        {/* USER PHOTO CONTENT CONTAINER */}
         <View style={styles.container}>
           <View style={styles.contentHeaderContainer}>
             <Text style={styles.contentHeader}>Your Photos</Text>
-            {/* <EditVideosButton /> */}
+            <EditVideosButton />
           </View>
           <View style={styles.photoContainer}>
+            {/* === USER VIDEO IF TRUE LOGIC === */}
             {user.photos.length <= 0 && (
               <AppText style={{ textAlign: "center" }}>
                 Add a photo by clicking the gear icon above!
@@ -111,6 +128,8 @@ function AccountScreen({ navigation }) {
               })}
           </View>
         </View>
+
+        {/* LOGOUT MODAL */}
         <View style={styles.centeredView}>
           <Modal
             animationType="slide"
@@ -138,6 +157,8 @@ function AccountScreen({ navigation }) {
             </View>
           </Modal>
         </View>
+
+        {/* BOTTOM OPTIONS CONTAINER */}
         <View style={styles.container}>
           <ListItem
             title="Log Out"
@@ -153,6 +174,7 @@ function AccountScreen({ navigation }) {
             }
             onPress={() => navigation.navigate("Settings")}
           />
+          {/* === ABOUT US IMPORT === */}
           <AboutUs />
         </View>
       </ScrollView>

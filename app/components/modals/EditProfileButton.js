@@ -33,18 +33,32 @@ import LocationItem from "../LocationItem";
 import Icon from "../Icon";
 
 function EditProfileButton(props) {
+  // GET USER INFO
   const { user, logOut } = useAuth();
-  const [error, setError] = useState();
-
   const [details, fetchDetails] = useState(false);
   const [latitude, setLatitude] = useState();
   const [longitude, setLongitude] = useState();
 
+  // TOGGLE MODALS
+  const toggleLocationModal = () => {
+    setMainModalVisible(!mainModalVisible);
+    setLocationModalVisible(!locationModalVisible);
+  };
+  const toggleEmailModal = () => {
+    setMainModalVisible(!mainModalVisible);
+    setEmailModalVisible(!emailModalVisible);
+  };
+  const togglePasswordModal = () => {
+    setMainModalVisible(!mainModalVisible);
+    setPasswordModalVisible(!passwordModalVisible);
+  };
   const [mainModalVisible, setMainModalVisible] = useState(false);
   const [emailModalVisible, setEmailModalVisible] = useState(false);
   const [passwordModalVisible, setPasswordModalVisible] = useState(false);
   const [locationModalVisible, setLocationModalVisible] = useState(false);
 
+  // FORM SETUP LOGIC
+  const [error, setError] = useState();
   const validationSchema = Yup.object().shape({
     name: Yup.string().required().label("Name"),
     instruments: Yup.object().nullable().label("Instruments"),
@@ -62,7 +76,6 @@ function EditProfileButton(props) {
       .min(4)
       .label("confirmNewPassword"),
   });
-
   const handleSubmit = (values) => {
     console.log(values);
   };
@@ -73,54 +86,12 @@ function EditProfileButton(props) {
     console.log(values);
   };
 
-  const openLocationModal = () => {
-    setMainModalVisible(!mainModalVisible);
-    setLocationModalVisible(!locationModalVisible);
-  };
-
-  const openEmailModal = () => {
-    setMainModalVisible(!mainModalVisible);
-    setEmailModalVisible(!emailModalVisible);
-  };
-  const closeEmailModal = () => {
-    setMainModalVisible(!mainModalVisible);
-    setEmailModalVisible(!emailModalVisible);
-  };
-
-  const openPasswordModal = () => {
-    setMainModalVisible(!mainModalVisible);
-    setPasswordModalVisible(!passwordModalVisible);
-  };
-  const closePasswordModal = () => {
-    setMainModalVisible(!mainModalVisible);
-    setPasswordModalVisible(!passwordModalVisible);
-  };
-  const closeLocationModal = () => {
-    setMainModalVisible(!mainModalVisible);
-    setLocationModalVisible(!locationModalVisible);
-  };
-
-  // const handleSubmit = async (userInfo) => {
-  //   const result = await registerApi.request(userInfo);
-
-  //   if (!result.ok) {
-  //     if (result.data) setError(result.data.error);
-  //     else {
-  //       setError("An unexpected error occurred.");
-  //       console.log(result);
-  //     }
-  //     return;
-  //   }
-
-  //   const { data: authToken } = await loginApi.request(
-  //     userInfo.email,
-  //     userInfo.password
-  //   );
-  //   auth.logIn(authToken);
-  // };
   return (
     <>
+      {/* MODAL TRIGGER - BUTTON */}
       <Button title="Edit Profile" onPress={() => setMainModalVisible(true)} />
+
+      {/* === MAIN MODAL === */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -133,6 +104,7 @@ function EditProfileButton(props) {
           <View style={styles.modalView}>
             <ScrollView styles={styles.scrollView}>
               <Text style={styles.modalText}>Edit Profile</Text>
+              {/* === CHAGNGE IMAGE CONTAINER === */}
               <TouchableOpacity
                 style={styles.imageContainer}
                 onPress={() => console.log("profilePic")}
@@ -145,8 +117,10 @@ function EditProfileButton(props) {
                 />
                 <Text style={styles.imageText}>Click to change</Text>
               </TouchableOpacity>
+
               <View style={styles.separator} />
 
+              {/* === USER DETAILS FORM === */}
               <Text style={styles.detailHeader}>Your Details:</Text>
               <Form
                 initialValues={{
@@ -174,6 +148,7 @@ function EditProfileButton(props) {
                     );
                   })}
                 </View>
+                {/* === ADD INSTRUMENT PICKER === */}
                 <Picker
                   items={searchParams.Categories}
                   name="instruments"
@@ -186,22 +161,26 @@ function EditProfileButton(props) {
                   onPress={() => console.log("Something")}
                 />
                 <View style={styles.separator} />
+
+                {/* === CHANGE LOCATION CONTAINER === */}
                 <Text style={styles.header}>Your Location:</Text>
                 <AppText style={styles.userLocation}>{user.location}</AppText>
-                <Button onPress={() => openLocationModal()} title="Change" />
+                <Button onPress={() => toggleLocationModal()} title="Change" />
                 <View style={styles.separator} />
+
+                {/* === EXTRA SETTINGS CONTAINER === */}
                 <AppText style={styles.header}>Extra settings:</AppText>
                 <Button
                   backgroundColor={colors.light}
                   color="medium"
                   title="Change Email"
-                  onPress={() => openEmailModal()}
+                  onPress={() => toggleEmailModal()}
                 />
                 <Button
                   backgroundColor={colors.light}
                   color="medium"
                   title="Change Password"
-                  onPress={() => openPasswordModal()}
+                  onPress={() => togglePasswordModal()}
                 />
                 <Button
                   backgroundColor={colors.light}
@@ -214,6 +193,8 @@ function EditProfileButton(props) {
           </View>
         </View>
       </Modal>
+
+      {/* CHANGE EMAIL MODAL */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -277,13 +258,15 @@ function EditProfileButton(props) {
                   backgroundColor={colors.light}
                   color="dark"
                   title="Cancel"
-                  onPress={() => closeEmailModal()}
+                  onPress={() => toggleEmailModal()}
                 />
               </Form>
             </ScrollView>
           </View>
         </View>
       </Modal>
+
+      {/* CHANGE PASSWORD MODAL */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -344,13 +327,15 @@ function EditProfileButton(props) {
                   backgroundColor={colors.light}
                   color="dark"
                   title="Cancel"
-                  onPress={() => closePasswordModal()}
+                  onPress={() => togglePasswordModal()}
                 />
               </Form>
             </ScrollView>
           </View>
         </View>
       </Modal>
+
+      {/* CHANGE LOCATION MODAL */}
       <Modal
         animationType="slide"
         transparent={true}
@@ -364,6 +349,8 @@ function EditProfileButton(props) {
             <Text style={styles.modalText}>Change Location</Text>
             <AppText>Your current location is</AppText>
             <AppText>{user.location}</AppText>
+
+            {/* === GOOGLE AUTOCOMPLETE === */}
             <GoogleAutoComplete
               apiKey={API_KEY.API_KEY}
               debounce={500}
@@ -413,7 +400,7 @@ function EditProfileButton(props) {
             <Button
               color="medium"
               title="Cancel"
-              onPress={() => closeLocationModal()}
+              onPress={() => toggleLocationModal()}
             />
           </View>
         </View>
